@@ -1,0 +1,1 @@
+{{ event_time }} | Player "{{ victim }}" (DEAD) (id={{ victim_guid }} pos={{ victim_pos_x }}, {{ victim_pos_y }}, {{ victim_pos_z }} killed by Player "{{ killer }}" (id={{ killer_guid }} pos={{ killer_pos_x }}, {{ killer_pos_y }}, {{ killer_pos_z }}) with {{ killer_weapon }} from {{ killer_distance | _line_ }}

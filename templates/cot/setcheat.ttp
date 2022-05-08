@@ -1,0 +1,1 @@
+{{ event_time }} | [COT] {{ player_guid }}: Set {{ cheat }} To {{ cheat_state }} [guid={{ target_guid }}]

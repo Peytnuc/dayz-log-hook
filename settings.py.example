@@ -1,0 +1,109 @@
+# Default Events
+from events.vanilla import (
+    EventChat,
+    EventDisconnect,
+    EventConnected,
+    EventSuicide,
+    EventHit,
+    EventDied,
+    EventKilledByPlayer,
+)
+
+# Custom Events
+from events.cot import EventCOTHealed, EventCOTTeleported, EventCOTSetCheat
+from events.expansion import EventExpansionAirdrop, EventExpansionSpawnSelection
+
+# Default Webhooks
+from webhooks.discord import WebhookDiscord
+
+ADMIN_LOG_FILE = "C:\OmegaManager\servers\peytnuc-prod-namalsk\profiles\DayZServer_x64.ADM"  # CHANGE ME
+
+# Admin Webhooks (eg. Private Admin Discord Channels)
+ADMIN_WEBHOOKS = [
+    WebhookDiscord(
+        "<discord-webhook-url>"
+    )
+]
+
+# Public Webhooks (eg. Killfeeds or Live Feeds of your server)
+WEBHOOKS = [
+    WebhookDiscord(
+        "<discord-webhook-url>"
+    )
+]
+
+EVENTS = [
+    # Default Private Events
+    EventChat(
+        "chat", "Chat Message", "vanilla\chat.ttp", supported_webhooks=ADMIN_WEBHOOKS
+    ),
+    EventConnected(
+        "connect",
+        "Player Connected",
+        "vanilla\connected.ttp",
+        supported_webhooks=ADMIN_WEBHOOKS,
+    ),
+    EventDisconnect(
+        "disconnect",
+        "Player Disconnected",
+        "vanilla\disconnected.ttp",
+        supported_webhooks=ADMIN_WEBHOOKS,
+    ),
+    EventHit("hit", "Player Hit", "vanilla\hit.ttp", supported_webhooks=ADMIN_WEBHOOKS),
+    EventDied(
+        "died", "Player Died", "vanilla\died.ttp", supported_webhooks=ADMIN_WEBHOOKS
+    ),
+    # Default Public Events
+    EventSuicide(
+        "suicide", "Player Died", "vanilla\suicide.ttp", supported_webhooks=WEBHOOKS
+    ),
+    EventKilledByPlayer(
+        "killed_by_player",
+        "Player Killed",
+        "vanilla\killed_by_player.ttp",
+        supported_webhooks=[WEBHOOKS],
+    ),
+    # Custom Private Events
+    # COT
+    EventCOTHealed(
+        "cot_healed",
+        "[COT] Healed",
+        "cot\healed.ttp",
+        supported_webhooks=ADMIN_WEBHOOKS,
+    ),
+    EventCOTTeleported(
+        "cot_teleported",
+        "[COT] Teleported",
+        "cot\\teleport.ttp",
+        supported_webhooks=ADMIN_WEBHOOKS,
+    ),
+    EventCOTSetCheat(
+        "cot_setcheat",
+        "[COT] Player Management",
+        "cot\setcheat.ttp",
+        supported_webhooks=ADMIN_WEBHOOKS,
+    ),
+    # Expansion
+    EventExpansionSpawnSelection(
+        "expansion_spawnselection",
+        "[Expansion] SpawnSelection",
+        "expansion\spawn.ttp",
+        supported_webhooks=ADMIN_WEBHOOKS,
+    ),
+    # Custom Public Events
+    # Expansion
+    # You can also be more specific if you only want a certain event to go to a separate dedicated Discord channel for example
+    EventExpansionAirdrop(
+        "expansion_airdrop",
+        "[Expansion] Airdrop",
+        "expansion\\airdrop.ttp",
+        supported_webhooks=[WebhookDiscord("<discord-webhook-url>")],
+    ),
+]
+
+
+class Settings:
+    def __init__(self, filepath: str = ADMIN_LOG_FILE, interval: int = 5) -> None:
+        self.filepath = filepath
+        self.interval = interval
+        self.events = EVENTS

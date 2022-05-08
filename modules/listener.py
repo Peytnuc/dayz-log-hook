@@ -1,6 +1,7 @@
 from tail import Tail
 from loguru import logger
 
+
 class Listener:
     def __init__(self, file_path: str, interval: int, events: list) -> None:
         self.file_path = file_path
@@ -24,11 +25,11 @@ class Listener:
 
     def handle_events(self, event_message):
         for event in self.events:
-           event.parse_event(event_message)
-           if event.processed:
-               event.process()
-               event.processed = False
-               break
+            event.parse_event(event_message)
+            if event.processed:
+                event.process()
+                event.processed = False
+                break
 
     def register_webhooks(self):
         pass

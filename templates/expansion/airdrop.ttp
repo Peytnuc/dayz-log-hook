@@ -1,0 +1,1 @@
+{{ event_time }} | {{ _ }} [MissionAirdrop] An airdrop is heading towards "{{ location }}" (pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }}> type={{ airdrop_type }}) with a {{ airdrop_container }}

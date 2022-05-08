@@ -2,7 +2,7 @@
 
 This is a simply python script which essentially looks at the administrator logs (ADM) and is highly expandable. I was sick of all the solutions out on the internet (or maybe I wasn't looking properly) but have tried my best to make this very user friendly as long as you can follow these instructions. This python script should always be running so ensure you monitor the script and launch it again if it isn't found, later I will extend it into a windows service so you can make it auto-restart/start when something goes wrong locally on your server.
 
-The only dependency you need is Python on your Windows server.
+The only dependency you need is Python on your Windows server. Before you start, ensure you COPY the `settings.py.example` and rename it to `settings.py`.
 
 ### Flow
 
@@ -104,6 +104,6 @@ EVENTS = [
     EventChat("chat", "Chat Message", "chat.ttp", supported_webhooks=WEBHOOKS),
     EventDisconnect("disconnect", "Player Disconnected", "disconnected.ttp", supported_webhooks=WEBHOOKS),
     EventCOTHealed("cot_healed", "[COT] Healed", "cot_healed.ttp", supported_webhooks=WEBHOOKS),
-    EventSuicide("suicide", "Player Died", "suicide.ttp", supported_webhooks=[WebhookDiscord("https://discord.com/api/webhooks/<webhook2>")]) # Generic Channel
+    EventSuicide("suicide", "Player Died", "suicide.ttp", supported_webhooks=[WebhookDiscord("https://discord.com/api/webhooks/<webhook2>")]) # More specific Webhook so only this event goes to this specific channel
 ]
 ```

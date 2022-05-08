@@ -1,0 +1,1 @@
+{{ event_time }} | Player "{{ player_name }}" is connected (id={{ player_guid }})

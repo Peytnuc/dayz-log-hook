@@ -1,0 +1,1 @@
+{{ event_time }} | {{ _ }} [SpawnSelection] Player "{{ player_name }}" (id={{ player_guid }}) spawned at {{ pos_x }}, {{ pos_y }}, {{ pos_z }}>

@@ -1,0 +1,2 @@
+{{ event_time }} | [COT] {{ player_guid | _start_ }}: Teleported to position {{ pos_x }}, {{ pos_y }}, {{ pos_z }}>
+{{ event_time }} | [COT] {{ player_guid | _start_ }}: Teleported to {{ pos_x }}, {{ pos_y }}, {{ pos_z }}> [guid={{ player_tp }}]
