@@ -107,3 +107,7 @@ EVENTS = [
     EventSuicide("suicide", "Player Died", "suicide.ttp", supported_webhooks=[WebhookDiscord("https://discord.com/api/webhooks/<webhook2>")]) # More specific Webhook so only this event goes to this specific channel
 ]
 ```
+
+An example of these events being sent to a discord channel:
+
+![discord_example](discord_example.png)
