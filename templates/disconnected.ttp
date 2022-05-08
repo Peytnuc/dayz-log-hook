@@ -1,0 +1,1 @@
+{{ event_time }} | Player "{{ player_name }}"(id={{ player_guid }}) has been disconnected

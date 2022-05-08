@@ -1,0 +1,3 @@
+{{ event_time }} | Player "{{ player_name | _start_ }}" (id={{ player_guid }} pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }})[HP: {{ player_hp }}] hit by {{ hit_by }} into {{ hit_location }} for {{ hit_damage }} damage ({{ hit_source }}) 
+{{ event_time }} | Player "{{ player_name | _start_ }}" (id={{ player_guid }} pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }})[HP: {{ player_hp }}] hit by {{ hit_by }}
+{{ event_time }} | Player "{{ player_name | _start_ }}" (DEAD) (id={{ player_guid }} pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }})[HP: {{ player_hp }}] hit by {{ hit_by }}

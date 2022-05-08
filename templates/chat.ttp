@@ -1,0 +1,1 @@
+{{ event_time }} | Chat("{{ player_name }}"(id={{ player_guid }})): {{ text | _line_ }}

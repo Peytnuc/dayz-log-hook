@@ -1,0 +1,1 @@
+{{ event_time }} | Player "{{ player_name }}" (DEAD) (id={{ player_guid }} pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }}) died. Stats> Water: {{ stats_water }} Energy: {{ stats_energy }} Bleed sources: {{ stats_bleed_sources }}

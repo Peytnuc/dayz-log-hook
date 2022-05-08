@@ -1,0 +1,1 @@
+{{ event_time }} | [COT] {{ player_source }}: Healed [guid={{ player_target }}]

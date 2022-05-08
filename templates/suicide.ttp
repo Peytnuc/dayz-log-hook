@@ -1,0 +1,1 @@
+{{ event_time }} | Player "{{ player_name }}" (id={{ player_guid }} pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }}) committed suicide
