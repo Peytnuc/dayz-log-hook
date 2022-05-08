@@ -12,6 +12,7 @@ class WebhookDiscord(WebhookGeneric):
             logger.error(
                 f"Unable to send Discord webhook message for {event.event_name} due to method 'handle_discord' being implemented incorrectly."
             )
+            return
 
         title, message = event.handle_discord()
 

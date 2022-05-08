@@ -20,44 +20,60 @@ Ensure you edit the settings.py and change the following for a great experience:
 
 If you want to record a new event, you will need to perform the following:
 
-1) Create the event in a separate python file under `events`. This should look something like this:
+1) Create the event in a separate python file under `events`. This should look something like this if you are creating an event for the DayZ Expansion mod:
 
-events\some_mod.py
+events\expansion.py
 ```
 from modules.event import Event
 
-class EventSomeModSpecific(Event):
+
+class EventExpansionAirdrop(Event):
     def handle_discord(self):
         pass
 ```
 
 2) Create the template under `templates` folder with the .ttp extension to filter the data within the log using TTP format (https://ttp.readthedocs.io/en/latest/Quick%20start.html) - An online tool can be used to test your log against a specific filter here (https://textfsm.nornir.tech/)
 
-For example, if I want to match a Chat event which is a Vanillia log therefore the format can be found here https://community.bistudio.com/wiki/DayZ:Administration_Logs#Logged_events, my ttp template will be stored as `templates\some_mod_specific.ttp` and contain the following:
+For example, if I want to match a Chat event which is a Vanillia log therefore the format can be found here https://community.bistudio.com/wiki/DayZ:Administration_Logs#Logged_events, my ttp template will be stored as `templates\expansion\airdrop.ttp` and contain the following:
 
 ```
-{{ event_time }} | Player "{{ player_name }}" (DEAD) (id={{ player_guid }} pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }}) died. Stats> Water: {{ stats_water }} Energy: {{ stats_energy }} Bleed sources: {{ stats_bleed_sources }}
+{{ event_time }} | {{ _ }} [MissionAirdrop] An airdrop is heading towards "{{ location }}" (pos={{ pos_x }}, {{ pos_y }}, {{ pos_z }}> type={{ airdrop_type }}) with a {{ airdrop_container }}
 ```
 
-3) I can now implement a function in my EventSomeModSpecific that I created in step 1 to handle the discord webhook data. Example:
+3) You can now implement a function in the EventExpansionAirdrop that we created in step 1 to handle the discord webhook data. Example:
 
 ```
 from modules.event import Event
 
-class EventSomeModSpecific(Event):
+
+class EventExpansionAirdrop(Event):
     def handle_discord(self):
-        return self.event_text, f"""Player {self.data["player_name"]} died..."""
+        return (
+            self.event_text,
+            f"""[{self.data["event_time"]}] An airdrop is heading towards {self.data["location"]}!""",
+        )
 ```
 
-Notice I am accessing the filtered data via `self.data["player_name"]`. If the event is not processed (eg. data isn't matched) then this handle_discord method will not be called.
+Notice I am accessing the filtered data via `self.data["location"]`. If the event is not processed (eg. data isn't matched) then this handle_discord method will not be called.
 
-4) Finally, I need to attach this Event in my `settings.py` like this:
+4) Finally, I need to attach this Event in my `run.py` like this:
 
 ```
+# Custom Events
+from events.expansion import EventExpansionAirdrop
+
+settings = Settings()
+
 EVENTS = [
-    EventChat("chat", "Chat Message", "chat.ttp", supported_webhooks=WEBHOOKS), # Added this one here
-    EventDisconnect("disconnect", "Player Disconnected", "disconnected.ttp", supported_webhooks=WEBHOOKS),
-    EventCOTHealed("cot_healed", "[COT] Healed", "cot_healed.ttp", supported_webhooks=WEBHOOKS)
+    # Custom Public Events
+    # Expansion
+    # You can also be more specific if you only want a certain event to go to a separate dedicated Discord channel for example
+    EventExpansionAirdrop(
+        "expansion_airdrop",
+        "[Expansion] Airdrop",
+        "expansion\\airdrop.ttp",
+        supported_webhooks=settings.webhooks["discord_expansion_airdrops"],
+    ),
 ]
 ```
 
@@ -82,6 +98,7 @@ class WebhookDiscord(WebhookGeneric):
         check_attr = getattr(event, "handle_discord", None)
         if not callable(check_attr):
             logger.error(f"Unable to send Discord webhook message for {event.event_name} due to method 'handle_discord' being implemented incorrectly.")
+            return
 
         title, message = event.handle_discord()
 
@@ -96,16 +113,23 @@ Any new webhook you implement must also have a function within the Event called 
 If you have any questions or ideas for improvement then please feel free to join the discord at: https://dsc.gg/peytnuc_dayz and post in the support channel. Feel free to also take a look at our discord to examples of these events working in-game. Currently the support for per-webhook Event is a bit wack, if you want to specifically only send certain Events across different discord channels, then you must create a new `WebhookDiscord` in your settings.py and add that to your specific event. For example, if you have a generic discord channel and a killfeed channel you will need to do something like this:
 
 ```
-WEBHOOKS = [
-    WebhookDiscord("https://discord.com/api/webhooks/<webhook1>") # Admin Channel
-]
-
-EVENTS = [
-    EventChat("chat", "Chat Message", "chat.ttp", supported_webhooks=WEBHOOKS),
-    EventDisconnect("disconnect", "Player Disconnected", "disconnected.ttp", supported_webhooks=WEBHOOKS),
-    EventCOTHealed("cot_healed", "[COT] Healed", "cot_healed.ttp", supported_webhooks=WEBHOOKS),
-    EventSuicide("suicide", "Player Died", "suicide.ttp", supported_webhooks=[WebhookDiscord("https://discord.com/api/webhooks/<webhook2>")]) # More specific Webhook so only this event goes to this specific channel
-]
+WEBHOOKS = {
+    "discord_admin": [
+        WebhookDiscord(
+            "<change-me>"
+        )
+    ],
+    "discord_public": [
+        WebhookDiscord(
+            "<change-me>"
+        )
+    ],
+    "discord_expansion_airdrops": [
+        WebhookDiscord(
+            "<change-me>"
+        )
+    ],
+}
 ```
 
 An example of these events being sent to a discord channel:
